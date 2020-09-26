@@ -10,6 +10,7 @@ import styles from './index.less';
 
 export type WrappedLoginItemProps = LoginItemProps;
 export type LoginItemKeyType = keyof typeof ItemMap;
+
 export interface LoginItemType {
   UserName: React.FC<WrappedLoginItemProps>;
   Password: React.FC<WrappedLoginItemProps>;
@@ -19,6 +20,7 @@ export interface LoginItemType {
 }
 
 export interface LoginItemProps extends Partial<FormItemProps> {
+  changeImageSrc?: string;
   name?: string;
   style?: React.CSSProperties;
   placeholder?: string;
@@ -59,8 +61,11 @@ const getFormItemOptions = ({
 };
 
 const LoginItem: React.FC<LoginItemProps> = (props) => {
+
   const [count, setCount] = useState<number>(props.countDown || 0);
   const [timing, setTiming] = useState(false);
+  const [captcha, setCaptcha] = useState('');
+  const [authCode, setAuthCode] = useState('');
   // 这么写是为了防止restProps中 带入 onChange, defaultValue, rules props tabUtil
   const {
     onChange,
@@ -76,6 +81,7 @@ const LoginItem: React.FC<LoginItemProps> = (props) => {
     ...restProps
   } = props;
 
+
   const onGetCaptcha = useCallback(async (mobile: string) => {
     const result = await getFakeCaptcha(mobile);
     if (result === false) {
@@ -85,16 +91,19 @@ const LoginItem: React.FC<LoginItemProps> = (props) => {
     setTiming(true);
   }, []);
 
-  const changeImage = useCallback(async => {
-    const result = false;
-    alert(1)
-    console.log("进来了")
-    if (result === false) {
-      return;
-    }
-    message.success('获取验证码成功！验证码为：1234');
-    setTiming(true);
-  }, []);
+  // var authCode = '';
+  // var changeImageSrc = '';
+  const changeImage = useCallback(async () => {
+    const authCode = await getCode();
+    setAuthCode(authCode)
+    const changeImageSrc = "data:image/gif;base64," + authCode.img;
+    setCaptcha(changeImageSrc)
+    // console.log(changeImageSrc)
+    return;
+  },[])
+  // changeImage()
+  // console.log("外面测试;")
+  // console.log(changeImageSrc)
 
   useEffect(() => {
     let interval: number = 0;
@@ -158,14 +167,12 @@ const LoginItem: React.FC<LoginItemProps> = (props) => {
   if (type === 'AuthCode') {
     return (
       <FormItem shouldUpdate noStyle>
-        <Input {...customProps} {...otherProps} 
-        onClick={() => {
-          // const value = getFieldValue('mobile');
-          changeImage;
-        }} 
-        suffix={<img height={30} width={50} src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png' />} />
+        <Input {...customProps} {...otherProps}
+         />
+      
       </FormItem>
     );
+    // suffix={<img height={30} width={50} onClick={() => changeImage()} src={captcha} />}
   }
   return (
     <FormItem name={name} {...options}>

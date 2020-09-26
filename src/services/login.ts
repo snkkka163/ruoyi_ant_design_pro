@@ -22,7 +22,7 @@ export async function getFakeCaptcha(mobile: string) {
 /**
  * 获取验证码图片数据
  */
-export async function getCode(){
+export function getCode(){
   return request(`${Constant.baseUrl}/captchaImage`,{
     method: 'GET',
   })
