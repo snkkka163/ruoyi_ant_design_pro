@@ -97,6 +97,7 @@ const LoginItem: React.FC<LoginItemProps> = (props) => {
     const authCode = await getCode();
     setAuthCode(authCode)
     const changeImageSrc = "data:image/gif;base64," + authCode.img;
+    localStorage.setItem('uuid',authCode.uuid);
     setCaptcha(changeImageSrc)
     // console.log(changeImageSrc)
     return;
@@ -126,7 +127,10 @@ const LoginItem: React.FC<LoginItemProps> = (props) => {
   if (!name) {
     return null;
   }
-
+  // 验证码图片首次执行s
+  useEffect(() => {
+    changeImage();
+  },[]);
 
 
   // get getFieldDecorator props
@@ -165,14 +169,29 @@ const LoginItem: React.FC<LoginItemProps> = (props) => {
   }
 
   if (type === 'AuthCode') {
+    const inputProps = omit(otherProps, ['onGetCaptcha', 'countDown']);
     return (
+
       <FormItem shouldUpdate noStyle>
-        <Input {...customProps} {...otherProps}
-         />
-      
+        {({ getFieldValue }) => (
+          <Row gutter={8}>
+            <Col span={16}>
+              <FormItem name={name} {...options}>
+                <Input {...customProps} {...otherProps} suffix="" />
+              </FormItem>
+            </Col>
+            <Col span={8}>
+            <Image
+              placeholder={true}
+              onClick={() => changeImage()}
+              src={captcha}
+            />
+            </Col>
+          </Row>
+        )}
       </FormItem>
+      
     );
-    // suffix={<img height={30} width={50} onClick={() => changeImage()} src={captcha} />}
   }
   return (
     <FormItem name={name} {...options}>

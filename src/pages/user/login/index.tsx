@@ -37,6 +37,8 @@ const Login: React.FC<LoginProps> = (props) => {
 
   const handleSubmit = (values: LoginParamsType) => {
     const { dispatch } = props;
+    console.log("准备发送登录请求:")
+    console.log(values)
     dispatch({
       type: 'login/login',
       payload: { ...values, type },
@@ -73,10 +75,8 @@ const Login: React.FC<LoginProps> = (props) => {
             ]}
           />
           <AuthCode
-            name="captcha"
+            name="code"
             placeholder="验证码"
-            getCaptchaButtonText=""
-            getCaptchaSecondText="秒"
             rules={[
               {
                 required: true,

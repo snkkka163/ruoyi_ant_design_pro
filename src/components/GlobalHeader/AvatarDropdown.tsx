@@ -22,6 +22,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
     const { key } = event;
 
     if (key === 'logout') {
+      localStorage.setItem('token','');
       const { dispatch } = this.props;
 
       if (dispatch) {

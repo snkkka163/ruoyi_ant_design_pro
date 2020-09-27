@@ -9,6 +9,7 @@ export interface LoginParamsType {
 }
 
 export async function fakeAccountLogin(params: LoginParamsType) {
+  params['uuid'] = localStorage.getItem('uuid')
   return request(`${Constant.baseUrl}/login`, {
     method: 'POST',
     data: params,
