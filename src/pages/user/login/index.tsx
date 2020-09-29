@@ -37,12 +37,11 @@ const Login: React.FC<LoginProps> = (props) => {
 
   const handleSubmit = (values: LoginParamsType) => {
     const { dispatch } = props;
-    console.log("准备发送登录请求:")
-    console.log(values)
     dispatch({
       type: 'login/login',
       payload: { ...values, type },
     });
+    // changeImage();
   };
   // console.log("测试值:"+code)
   return (

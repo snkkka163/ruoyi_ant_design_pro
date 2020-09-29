@@ -93,6 +93,7 @@ const LoginItem: React.FC<LoginItemProps> = (props) => {
 
   // var authCode = '';
   // var changeImageSrc = '';
+  // let eventLoginStatus = localStorage.getItem('')
   const changeImage = useCallback(async () => {
     const authCode = await getCode();
     setAuthCode(authCode)
